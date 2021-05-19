@@ -1,6 +1,7 @@
 package com.example.demo.Service;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.example.demo.Model.User;
@@ -16,7 +17,7 @@ public class UserDAOService {
     static{
         users.add(new User(1,"Isa, " , new Date()));
         users.add(new User(2,"Shabani, " , new Date()));
-        users.add(new User(2,"Ramadani, " , new Date()));
+        users.add(new User(3,"Ramadani, " , new Date()));
     }
     public List<User> findAll(){
         return users;
@@ -32,6 +33,17 @@ public class UserDAOService {
         for(User users: users){
             if(users.getId() == id){
                 return users;
+            }
+        }
+        return null;
+    }
+    public User deleteById(int id){
+        Iterator<User> iterator = users.iterator();
+        while(iterator.hasNext()){
+            User user = iterator.next();
+            if(user.getId() == id){
+            iterator.remove();
+            return user;
             }
         }
         return null;

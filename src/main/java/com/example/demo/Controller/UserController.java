@@ -5,10 +5,13 @@ import com.example.demo.Service.UserDAOService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Objects;
@@ -26,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Object> saveUser(@RequestBody User user){
+    public ResponseEntity<Object> saveUser(@Valid @RequestBody User user){
         User userAdded = userService.saveUser(user);
 
 
@@ -40,6 +43,16 @@ public class UserController {
     }
     @GetMapping("/findOne/{id}")
     public User findOne(@PathVariable Integer id){
-        return userService.findOne(id);
+        User user = userService.findOne(id);
+        if(user==null)
+            throw new UserNotFoundException("id- " +id);
+            return user;
+    }
+    @DeleteMapping ("/deleteById/{id}")
+    public User deleteUser(@PathVariable Integer id){
+        User user = userService.deleteById(id);
+        if(user==null)
+            throw new UserNotFoundException("id- " +id);
+        return user;
     }
 }
